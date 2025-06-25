@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
-import { productsAPI } from '../services/api'
 import { listedProducts } from '../data/mockData'
 
 const Explore = () => {

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { login } from '../services/api'
 
 const SignIn = () => {
   const navigate = useNavigate()
@@ -7,14 +8,17 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    if (!email || !password) {
-      setError('Please fill in all fields.')
-      return
+    setError('')
+    try {
+      const { token, email: userEmail, companyName: userCompany } = await login({ email, password })
+      localStorage.setItem('token', token)
+      // Optionally store user info
+      navigate('/explore')
+    } catch (err) {
+      setError(err.message)
     }
-    // Simulate sign in logic
-    navigate('/explore')
   }
 
   return (

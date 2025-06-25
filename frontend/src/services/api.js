@@ -1,28 +1,21 @@
-import axios from 'axios'
+const API_URL = 'http://localhost:5000/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-
-// Products API
-export const productsAPI = {
-  getAll: async () => {
-    const response = await api.get('/products')
-    return response.data
-  }
+export async function signup({ email, companyName, password }) {
+  const res = await fetch(`${API_URL}/auth/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, companyName, password }),
+  });
+  if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
+  return res.json();
 }
 
-// Messages API
-export const messagesAPI = {
-  getByChatId: async (chatId) => {
-    const response = await api.get(`/chat/${chatId}/messages`)
-    return response.data
-  }
+export async function login({ email, password }) {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error((await res.json()).error || 'Login failed');
+  return res.json();
 }
-
-export default api 

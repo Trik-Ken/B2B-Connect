@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { signup } from '../services/api'
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -8,14 +9,17 @@ const Signup = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    if (!email || !company || !password) {
-      setError('Please fill in all fields.')
-      return
+    setError('')
+    try {
+      const { token, email: userEmail, companyName: userCompany } = await signup({ email, companyName: company, password })
+      localStorage.setItem('token', token)
+      // Optionally store user info
+      navigate('/explore')
+    } catch (err) {
+      setError(err.message)
     }
-    // Simulate signup logic
-    navigate('/explore')
   }
 
   return (

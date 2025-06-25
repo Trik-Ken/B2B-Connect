@@ -9,7 +9,7 @@ const BottomNavigation = ({ currentTab }) => {
       id: 'explore',
       label: 'Explore',
       icon: Home,
-      path: '/'
+      path: '/explore'
     },
     {
       id: 'chat',

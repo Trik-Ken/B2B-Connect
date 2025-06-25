@@ -14,7 +14,6 @@ import {
   Image as ImageIcon,
 } from 'lucide-react'
 import MessageBubble from '../components/MessageBubble'
-import { messagesAPI } from '../services/api'
 import { listedProducts, companyInfo as myCompanyInfo } from '../data/mockData' // Assuming seller might be a user too
 import Toast from '../components/Toast'
 
@@ -135,14 +134,22 @@ const ChatRoom = () => {
   const fileInputRef = useRef(null)
 
   useEffect(() => {
-    messagesAPI
-      .getByChatId(chatId)
-      .then(res => setMessages(res.data || []))
-      .catch(err => {
-        console.error('Error fetching messages:', err)
-        setError(`Failed to load messages: ${err.message}`)
-      })
-      .finally(() => setLoading(false))
+    setMessages([])
+    setLoading(true)
+    setError(null)
+    setNewMessage('')
+    setAttachment(null)
+    setShowCallModal(false)
+    setToast({ show: false, message: '' })
+
+    // Replace this with actual API call
+    setTimeout(() => {
+      setMessages([
+        { id: '1', chatId, sender: 'me', message: 'Hello!', timestamp: new Date().toISOString() },
+        { id: '2', chatId, sender: 'seller', message: 'Hi! How can I help you today?', timestamp: new Date().toISOString() },
+      ])
+      setLoading(false)
+    }, 1000)
   }, [chatId])
 
   useEffect(() => {
